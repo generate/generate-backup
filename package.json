@@ -25,7 +25,16 @@
     "generategenerator"
   ],
   "dependencies": {
-    "generate-defaults": "^0.6.6",
-    "is-valid-app": "^0.2.1"
+    "extend-shallow": "^2.0.1",
+    "is-valid-app": "^0.2.1",
+    "micromatch": "^2.3.11",
+    "mkdirp": "^0.5.1",
+    "tar-fs": "^1.14.0"
+  },
+  "devDependencies": {
+    "delete": "^0.3.2",
+    "generate": "^0.13.1",
+    "mocha": "^3.1.2",
+    "npm-install-global": "^0.1.2"
   }
 }
