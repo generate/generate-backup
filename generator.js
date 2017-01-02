@@ -5,7 +5,7 @@ var backup = require('./lib/backup');
 var extract = require('./lib/extract');
 
 /**
- * [Generate][] plugin or subgenerator that adds a [backup](#backup) and [extract](#extract) tasks for archiving and extract tar archives.
+ * [generate][] plugin or subgenerator that adds a [backup](#backup) and [extract](#extract) tasks for archiving and extract tar archives.
  * Advantages of using this generator include being able to specify complex ignore patterns (handled by [micromatch][]).
  *
  * ```js
@@ -19,7 +19,6 @@ var extract = require('./lib/extract');
  * ```
  *
  * @param  {Object} `app` [generate][] instance to add tasks to.
- * @api public
  */
 
 module.exports = function(app) {

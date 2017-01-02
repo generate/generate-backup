@@ -12,7 +12,7 @@
   "files": [
     "generator.js",
     "index.js",
-    "LICENSE"
+    "lib"
   ],
   "main": "index.js",
   "engines": {
@@ -21,9 +21,6 @@
   "scripts": {
     "test": "mocha"
   },
-  "keywords": [
-    "generategenerator"
-  ],
   "dependencies": {
     "extend-shallow": "^2.0.1",
     "is-valid-app": "^0.2.1",
@@ -38,6 +35,17 @@
     "mocha": "^3.1.2",
     "npm-install-global": "^0.1.2"
   },
+  "keywords": [
+    "archive",
+    "backup",
+    "bkp",
+    "extract",
+    "generate",
+    "generate-backup",
+    "generategenerator",
+    "generator",
+    "tar"
+  ],
   "verb": {
     "toc": false,
     "layout": "generator",
@@ -49,6 +57,22 @@
     ],
     "lint": {
       "reflinks": true
-    }
+    },
+    "related": {
+      "list": [
+        "generate",
+        "micromatch",
+        "tar-fs"
+      ]
+    },
+    "reflinks": [
+      "assemble",
+      "base",
+      "generate",
+      "gulp",
+      "tar-fs",
+      "verb",
+      "verb-generate-readme"
+    ]
   }
 }
