@@ -34,7 +34,21 @@
   "devDependencies": {
     "delete": "^0.3.2",
     "generate": "^0.13.1",
+    "gulp-format-md": "^0.1.11",
     "mocha": "^3.1.2",
     "npm-install-global": "^0.1.2"
+  },
+  "verb": {
+    "toc": false,
+    "layout": "generator",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
