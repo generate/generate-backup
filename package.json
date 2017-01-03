@@ -1,8 +1,8 @@
 {
   "name": "generate-backup",
-  "description": "Backup files.",
+  "description": "Create backup archives with generate.",
   "version": "0.1.0",
-  "homepage": "https://github.com/generate %>/generate-backup",
+  "homepage": "https://github.com/generate/generate-backup",
   "author": "Brian Woodward (https://github.com/doowb)",
   "repository": "generate/generate-backup",
   "bugs": {
