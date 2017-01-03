@@ -4,6 +4,7 @@ require('mocha');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
+var moment = require('moment');
 var generate = require('generate');
 var npm = require('npm-install-global');
 var del = require('delete');
@@ -11,6 +12,7 @@ var pkg = require('../package');
 var generator = require('..');
 var app;
 
+var today = moment.utc().format('YYYY-MM-DD');
 var isTravis = process.env.CI || process.env.TRAVIS;
 var fixtures = path.resolve.bind(path, __dirname, 'fixtures');
 var actual = path.resolve.bind(path, __dirname, 'actual');
@@ -29,6 +31,7 @@ function exists(name, cb) {
 }
 
 describe('generate-backup', function() {
+  this.timeout(5000);
   this.slow(250);
 
   if (!process.env.CI && !process.env.TRAVIS) {
@@ -37,10 +40,11 @@ describe('generate-backup', function() {
     });
   }
 
-  beforeEach(function() {
+  beforeEach(function(cb) {
     app = generate({silent: true});
-    app.cwd = actual();
+    app.cwd = fixtures();
     app.option('dest', actual());
+    app.option('src', fixtures());
 
     // see: https://github.com/jonschlinkert/ask-when
     app.option('askWhen', 'not-answered');
@@ -51,6 +55,7 @@ describe('generate-backup', function() {
     app.data('project', pkg);
     app.data('username', 'foo');
     app.data('owner', 'foo');
+    del(actual(), cb);
   });
 
   afterEach(function(cb) {
@@ -65,13 +70,14 @@ describe('generate-backup', function() {
     });
 
     it('should run the `default` task with .build', function(cb) {
+      this.timeout(30000);
       app.use(generator);
-      app.build('default', exists('foo.js', cb));
+      app.build('default', exists(`${today}.tar`, cb));
     });
 
     it('should run the `default` task with .generate', function(cb) {
       app.use(generator);
-      app.generate('default', exists('foo.js', cb));
+      app.generate('default', exists(`${today}.tar`, cb));
     });
   });
 
@@ -82,7 +88,7 @@ describe('generate-backup', function() {
         return;
       }
       app.use(generator);
-      app.generate('generate-backup', exists('foo.js', cb));
+      app.generate('generate-backup', exists(`${today}.tar`, cb));
     });
 
     it('should run the default task using the `generator` generator alias', function(cb) {
@@ -91,24 +97,24 @@ describe('generate-backup', function() {
         return;
       }
       app.use(generator);
-      app.generate('backup', exists('foo.js', cb));
+      app.generate('backup', exists(`${today}.tar`, cb));
     });
   });
 
   describe('backup (API)', function() {
     it('should run the default task on the generator', function(cb) {
       app.register('backup', generator);
-      app.generate('backup', exists('foo.js', cb));
+      app.generate('backup', exists(`${today}.tar`, cb));
     });
 
     it('should run the `backup` task', function(cb) {
       app.register('backup', generator);
-      app.generate('backup:backup', exists('foo.js', cb));
+      app.generate('backup:backup', exists(`${today}.tar`, cb));
     });
 
     it('should run the `default` task when defined explicitly', function(cb) {
       app.register('backup', generator);
-      app.generate('backup:default', exists('foo.js', cb));
+      app.generate('backup:default', exists(`${today}.tar`, cb));
     });
   });
 
@@ -117,28 +123,28 @@ describe('generate-backup', function() {
       app.register('foo', function(foo) {
         foo.register('backup', generator);
       });
-      app.generate('foo.backup', exists('foo.js', cb));
+      app.generate('foo.backup', exists(`${today}.tar`, cb));
     });
 
     it('should run the `default` task by default', function(cb) {
       app.register('foo', function(foo) {
         foo.register('backup', generator);
       });
-      app.generate('foo.backup', exists('foo.js', cb));
+      app.generate('foo.backup', exists(`${today}.tar`, cb));
     });
 
     it('should run the `generator:default` task when defined explicitly', function(cb) {
       app.register('foo', function(foo) {
         foo.register('backup', generator);
       });
-      app.generate('foo.backup:default', exists('foo.js', cb));
+      app.generate('foo.backup:default', exists(`${today}.tar`, cb));
     });
 
     it('should run the `generator:backup` task', function(cb) {
       app.register('foo', function(foo) {
         foo.register('backup', generator);
       });
-      app.generate('foo.backup:backup', exists('foo.js', cb));
+      app.generate('foo.backup:backup', exists(`${today}.tar`, cb));
     });
 
     it('should work with nested sub-generators', function(cb) {
@@ -147,20 +153,7 @@ describe('generate-backup', function() {
         .register('bar', generator)
         .register('baz', generator)
 
-      app.generate('foo.bar.baz', exists('foo.js', cb));
-    });
-
-    it('should run tasks as a sub-generator', function(cb) {
-      app = generate({silent: true, cli: true});
-
-      app.generator('foo', function(sub) {
-        sub.register('backup', require('..'));
-        sub.generate('backup:unit-test', function(err) {
-          if (err) return cb(err);
-          assert.equal(app.base.get('cache.unit-test'), true);
-          cb();
-        });
-      });
+      app.generate('foo.bar.baz', exists(`${today}.tar`, cb));
     });
   });
 });
