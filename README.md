@@ -5,7 +5,7 @@
 </a>
 </p>
 
-Backup files.
+Create backup archives with generate.
 
 # generate-backup
 
